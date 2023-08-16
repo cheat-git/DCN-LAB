@@ -1,0 +1,53 @@
+import java.util.Arrays;
+public class BellmanFord {
+ static class Edge {
+ int source, destination, weight;
+ Edge(int source, int destination, int weight) {
+ this.source = source;
+ this.destination = destination;
+ this.weight = weight;
+ }
+ }
+ static int INF = Integer.MAX_VALUE;
+ static void bellmanFord(int[][] graph, int V, int source) {
+ int[] distance = new int[V];
+ Arrays.fill(distance, INF);
+ distance[source] = 0;
+ // Relaxation step
+ for (int i = 0; i < V - 1; i++) {
+ for (int u = 0; u < V; u++) {
+ for (int v = 0; v < V; v++) {
+ if (graph[u][v] != 0 && distance[u] != INF && distance[u] + graph[u][v] < distance[v]) {
+ distance[v] = distance[u] + graph[u][v];
+ }
+ }
+ }
+ }
+ // Negative cycle check
+ for (int u = 0; u < V; u++) {
+ for (int v = 0; v < V; v++) {
+ if (graph[u][v] != 0 && distance[u] != INF && distance[u] + graph[u][v] < distance[v]) {
+ System.out.println("Graph contains negative cycle");
+ return;
+ }
+ }
+ }
+ // Print shortest distances
+ System.out.println("Shortest distances from source " + source + ":");
+ for (int i = 0; i < V; i++) {
+ System.out.println(i + ": " + distance[i]);
+ }
+ }
+ public static void main(String[] args) {
+ int V = 5; // Number of vertices
+ int[][] graph = {
+ {0, 6, 0, 7, 0},
+ {0, 0, 5, 8, -4},
+ {0, -2, 0, 0, 0},
+ {0, 0, -3, 0, 9},
+ {2, 0, 7, 0, 0}
+ };
+ int source = 0; // Source vertex
+ bellmanFord(graph, V, source);
+ }
+}
