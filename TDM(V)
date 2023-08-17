@@ -1,0 +1,54 @@
+    float atat=0,awt=0;
+      System.out.print("Enter the number of stations : ");
+      n = sc.nextInt();
+      pt = new int[n];
+      rpt = new int[n];
+      tat = new int[n];
+      wt = new int[n];
+      System.out.println("Enter processing time for each station : ");
+      for(i = 0;i<n;i++)
+        {
+          System.out.print("Station "+(i+1)+" : ");
+          pt[i] = sc.nextInt();
+          rpt[i] = pt[i];
+        }
+      System.out.print("Enter the frame size : ");
+      fs = sc.nextInt();
+
+      while(true)
+        {
+          for(i=0,stationCounter=0;i<n;i++)
+            {
+              temp = fs;
+              if(rpt[i]==0)
+              {
+                stationCounter++;
+                continue;
+              }
+              if(rpt[i]>fs)
+              {
+                rpt[i]-=fs;
+              } else if(rpt[i]>=0)
+              {
+                temp = rpt[i];
+                rpt[i] = 0;
+              }
+              currentTime+=temp;
+              tat[i] = currentTime;
+            }
+          if(stationCounter == n)
+            break;
+        }
+
+      System.out.println("Station\t\tProcessing Time\t\tCompletion Time\t\t Waiting Time");
+      for(i =0;i<n;i++)
+        {
+          wt[i] = tat[i]-pt[i];
+          atat+=tat[i];
+          awt+=wt[i];
+          System.out.println((i+1)+"\t\t\t"+pt[i]+"\t\t\t"+tat[i]+"\t\t\t"+wt[i]);
+        }
+      System.out.println("Average turnaround time : "+(atat/n));
+      System.out.println("Average waiting time : "+(awt/n));
+    }
+  }
